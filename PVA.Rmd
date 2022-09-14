@@ -1,0 +1,120 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+#trial PVA 
+
+####Exponential growth#####
+
+A simple population modelling
+Remember:
+Population size = N
+delta N = change in population size
+delta N = N(t+1)-Nt
+Delta N = B+I-D-E 
+B = birth
+I = immigration
+D = death
+E = emigration
+
+or 
+N = B-D
+Number of  birth and death in a population is not constant (important point)
+what is more constant in per-capita rate of producing offspring, or dying
+
+example:
+for every individual in the population now, we expect 0.8 new juveniles to enter the population in the coming year
+for every female in the population, we expect 1.1 offspring will be born this year
+we expect 3% of the current population to die in the coming year
+
+these per-capita usually expressed as lower case letter, thus 
+b = per-capita birth rate
+d = [er-capita death rate
+
+to compute these (also known as population vital rates), 
+you can 
+b = Bt/Nt (divide the total number of Birth B or Death D by the population size N at given times)
+d = Dt/Nt
+
+delta N = b.Nt - d.Nt
+delta N = (b-d) x Nt
+If b-d = r (differences between per-capita birth and death)
+delta N = r x Nt
+
+these are the most fundamental things in the population ecology
+
+(follow notes based on lab exercise here)
+
+```{r wd}
+setwd("~/Documents/PVA-neofelis diardi")
+getwd()
+```
+
+# set the parameter
+```{r params}
+r = 0.1 #percapita growth rate, in example
+lambda = 1 + r #1+r is equal to lambda, the finite rate of growth
+N0 = 100 #initial population size
+nyears= 30 #number of time step (in years) to stimulate
+
+#how we predict the number of population size in next 30 years?
+year = seq(from = 0, to = nyears, by = 1) #create sequence number from 0 to nyears (30), and increment this sequence by 1 = vector
+year
+
+# build a storage structure to store simulated population size over this time period
+N = numeric (nyears+1) #numeric to take the contents within the parentheses and conevert it to numeric classes
+names(N) = year
+N
+
+```
+
+#run the simulation
+
+```{r simulation}
+N[1] = N0 #vector number 1 will change to N0 (initial pop size)
+for (i in 2:(nyears+1)){  # This for-loop will run through the line of code between the curly brackets {}. "i" is simply the name of a variable (you can use "j", or "k", instead -- any variable name will do). "i" changes each time the loop iterates; basically, it will increase by 1 each time the loop is run, starting at "2" up until the specified maximum number of loops "nyears+1". 
+  N[i] <- N[i-1] * lambda  # This takes the [i - 1] element of "N", multiplies that element by the value of lambda, then assigns that calculated result to the [i] element of "N".
+}                         # This ends the for-loop.
+
+N
+
+
+```
+
+
+#plot
+```{r plot}
+plot(N~year)
+```
+
+###########end here#########
+
+#add density dependences and carrying capacity
+
+b = bmax - aN,  density dependence birth rate = most favorable (max) birth rate - (strenght of density dependence*N)
+d = dmin + cN , density-dependence death rate = most favorable (min) death rate + strength of density dependence * N)
+
+
+```{r density dependence}
+Density = seq (0, 15000, 10) #create a sequence of numbers from 0 to 15000, representing range of population densities
+
+## constant
+b_max = 0.85 #maximum reproduction at low densities
+d_min = 0.3 #minimum mortaliti at low densities
+
+a = 0.00007 #d-d terms #a= strenght of density dependence
+c = 0.00003 #c = strenght of density dependence
+
+b = b_max - a*Density
+d = d_min + c*Density
+
+K <- (b_max-d_min)/(a+c)   # compute carrying capacity
+K
+
+plot(Density,b,type="l",col="green",lwd=2,ylim=c(0,2),main="Density-Dependence!",xlim=c(0,15000),ylab="Vital rate (b or d)")
+points(Density,d,type="l",col="red",lwd=2)
+legend("topleft",col=c("green","red"),lty=c(1,1),legend=c("per-capita birth rate","per-capita mortality"),bty="n")
+
+
+```
+##end here

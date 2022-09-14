@@ -1,0 +1,52 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+#trial PVA
+
+####Exponential growth#####
+
+A simple population modelling
+Remember:
+Population size = N
+delta N = change in population size
+delta N = N(t+1)-Nt
+Delta N = B+I-D-E
+B = birth
+I = immigration
+D = death
+E = emigration
+
+or
+N = B-D
+Number of  birth and death in a population is not constant (important point)
+what is more constant in per-capita rate of producing offspring, or dying
+
+example:
+for every individual in the population now, we expect 0.8 new juveniles to enter the population in the coming year
+for every female in the population, we expect 1.1 offspring will be born this year
+we expect 3% of the current population to die in the coming year
+
+these per-capita usually expressed as lower case letter, thus
+b = per-capita birth rate
+d = [er-capita death rate
+
+to compute these (also known as population vital rates),
+you can
+b = Bt/Nt (divide the total number of Birth B or Death D by the population size N at given times)
+d = Dt/Nt
+
+delta N = b.Nt - d.Nt
+delta N = (b-d) x Nt
+If b-d = r (differences between per-capita birth and death)
+delta N = r x Nt
+
+these ase the most important
+
+
+
+```{r}
+
+
+
+```
